@@ -1,6 +1,42 @@
 # Fibers on Ruby
 
+Las fibras son estructuras que implementan un mecanismo de concurrencia cooperativa y liviana en Ruby. Básicamente, son un medio para crear bloques de código que se pueden pausar y reanudar, al igual que los hilos. La principal diferencia es que nunca se planifican implicitamente y que la programación debe realizarla el programador y no la VM. 
 
+O sea que en el caso de los `threads`, el scheduler se encarga de la planificacion y de 
+
+A diferencia de otros modelos de concurrencia ligeros sin stack, cada `fiber` viene con un stack. Esto permite que el fiber se pause desde llamadas de función anidadas dentro del bloque del `Fiber`.
+
+Al ser un esquema colaborativo, nos da un mayor control de la ejecucion, y es mas, proporcionan un control total al programador sore su ejecucion como mencionamos antes. Veamos un ejemplo de comparacion en cuanto a los tiempos..
+
+![](./img/fiversvsthreads.png)
+
+
+
+> Nota: Desde Ruby 3.0, el concepto de los `non-blocking fibers` fue introducido.  Since Ruby 3.0, the concept of non-blocking fiber was introduced. Non-blocking fiber, when reaching any potentially blocking operation (like sleep, wait for another process, wait for I/O data to be ready), instead of just freezing itself and all execution in the thread, yields control to other fibers, and allows the scheduler to handle waiting and waking (resuming) the fiber when it can proceed.
+
+For Fiber to behave as non-blocking, it should be created in ::new with blocking: false (which is the default now), and ::scheduler should be set with ::set_scheduler. If ::scheduler is not set in the current thread, blocking and non-blocking fiber's behavior is identical.
+
+Ruby doesn't provide a scheduler class: it is expected to be implemented by the user and correspond to Fiber::SchedulerInterface.
+
+### Diferencias que vemos entre los threads y fibers
+
+> TL;DR.. 
+
+- Los Fibers son ligeros en cuanto a la memoria que consumen y los tiempos del ciclo de vida
+- Tenemos el control de los Fibers, de manera explicita, o sea que tenemos el control absoluto de su ciclo de vida y planificacion.
+- Si bien con los threads tenemos al scheduler que decide cuando un thread se pausa o reanuda, en el caso de los Fibers es variante. O sea, al tener el control nosotros de la planificacion, tenemos que especificar cuando iniciar y parar la ejecucion de un Fiber.
+- Los Fibers, son maneras de escribir bloques de codigo, que pueden ser pausados o resumidos, bastante parecidos a los threads, pero con la diferencia de la planificacion de nuestro lado.
+- Los `Threads` se ejecutan en un segundo plano, especialmente cuando hay una interrupcion. En el caso de los Fibers, se convierten en el programa principal, cuando se ejecutan, hasta que uno los para. 
+
+### Estados de los Fibers
+
+![](./img/fiber_status.png)
+
+### Que son los Fibers por atras??
+
+En realidad los Fibers, en su implementacion al menos en MRI, son en suma corutinas, simples corutinas.
+
+Incluso las mejoras que se introdujeron en Ruby 2.6 
 
 ### Sobre el tamaño del stack de Threads y Fibers  
 

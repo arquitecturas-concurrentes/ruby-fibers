@@ -42,7 +42,7 @@ def puts_fibonacci(number)
   number.times { puts fiber.resume }
 end
 
-puts_fibonacci(45)
+#puts_fibonacci(45)
 
 ## Benching...
 MAGIC_NUMBER = 40

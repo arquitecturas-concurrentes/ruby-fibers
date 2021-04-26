@@ -1,8 +1,10 @@
 require 'fiber'
 
-f = Fiber.new {
+# Dead fiber???
+
+f = Fiber.new do
   puts "i'm alive!"
-}
+end
 
 puts "have *not* resumed #{f}"
 puts "Is it alive? => #{f.alive?}"

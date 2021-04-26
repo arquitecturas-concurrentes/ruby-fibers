@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Fibers life cycle
 # fibers_1.rb
 
 a = Fiber.new do

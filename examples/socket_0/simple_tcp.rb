@@ -11,7 +11,8 @@ loop do
 
   fork do
     while buffer = client.gets
-      client.puts(buffer)
+      puts "Got #{buffer}"
+      client.puts("Received #{buffer}. Pong!")
     end
 
     client.close
