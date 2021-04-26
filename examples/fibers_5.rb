@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 
+## !!!IMPORTANT: Change to ruby-head as 3.0.0-preview1 won't have the `set_scheduler` method
 require_relative 'simple_scheduler'
 
 scheduler = SimpleScheduler.new

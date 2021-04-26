@@ -10,8 +10,9 @@ class Reactor
   end
 
   def run
+    _error_events = [] # unused for now...
     while @readable.any? || @writable.any?
-      readable, writable = IO.select(@readable.keys, @writable.keys, [])
+      readable, writable = IO.select(@readable.keys, @writable.keys, _error_events)
 
       readable.each do |io|
         @readable[io].resume
@@ -39,5 +40,7 @@ class Reactor
     @writable.delete(io)
 
     yield if block_given?
+  rescue Errno::ECONNRESET
+    $stdout.puts "Writable IO #{io} unreachale. Passing.."
   end
 end
